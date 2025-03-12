@@ -19,7 +19,7 @@ public class UserRepository implements UserRepositoryPort {
     @Override
     public Optional<User> findByEmail(String email) {
         return jpaRepository.findByEmail(email)
-                .map(UserEntity::toDomain);
+                .map(UserEntity::toModel);
     }
 
     @Override

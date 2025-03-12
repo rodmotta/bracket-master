@@ -4,26 +4,28 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class Tournament {
-    private Long id;
+    private UUID id;
     private String title;
     private LocalDateTime datetime;
     private User organizer;
-    private int maximumParticipants;
+    private int participantLimit;
     private List<Participant> participants;
     private List<Round> rounds;
 
-    public Tournament(String title, LocalDateTime datetime, User organizer, int maximumParticipants) {
+    public Tournament(UUID id, String title, LocalDateTime datetime, User organizer, int participantLimit) {
+        this.id = id;
         this.title = title;
         this.datetime = datetime;
         this.organizer = organizer;
-        this.maximumParticipants = validNumberOfParticipants(maximumParticipants);
+        this.participantLimit = validLimitOfParticipants(participantLimit);
         this.participants = new ArrayList<>();
     }
 
     //fixme: value object
-    private int validNumberOfParticipants(int maximumParticipants) {
+    private int validLimitOfParticipants(int maximumParticipants) {
         Set<Integer> validNumberOfParticipants = Set.of(4, 8, 16, 32);
         if (validNumberOfParticipants.contains(maximumParticipants)) {
             return maximumParticipants;
@@ -32,7 +34,7 @@ public class Tournament {
     }
 
     public void addParticipant(Participant participant) {
-        if (participants.size() >= maximumParticipants) {
+        if (participants.size() >= participantLimit) {
             throw new IllegalArgumentException(); //fixme
         }
         participants.add(participant);
@@ -40,10 +42,10 @@ public class Tournament {
 
     public List<Round> generateBrackets() {
 
-        int totalRounds = (int) (Math.log(maximumParticipants) / Math.log(2));
+        int totalRounds = (int) (Math.log(participantLimit) / Math.log(2));
         var rounds = new ArrayList<Round>();
 
-        int matchesInRound = maximumParticipants / 2;
+        int matchesInRound = participantLimit / 2;
 
         for (int i = 0; i < totalRounds; i++) {
             Round round = new Round(i);
@@ -59,5 +61,21 @@ public class Tournament {
         }
 
         return rounds;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getParticipantLimit() {
+        return participantLimit;
     }
 }

@@ -21,7 +21,7 @@ public class UserEntity {
         this.email = user.getEmail();
     }
 
-    public User toDomain() {
+    public User toModel() {
         return new User(id, name, email);
     }
 }

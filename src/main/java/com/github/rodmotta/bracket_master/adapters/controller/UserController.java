@@ -3,10 +3,8 @@ package com.github.rodmotta.bracket_master.adapters.controller;
 import com.github.rodmotta.bracket_master.adapters.controller.dto.AuthCodeRequest;
 import com.github.rodmotta.bracket_master.adapters.controller.dto.TokenResponse;
 import com.github.rodmotta.bracket_master.core.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("users")
@@ -19,6 +17,7 @@ public class UserController {
     }
 
     @PostMapping("auth/discord")
+    @ResponseStatus(HttpStatus.OK)
     public TokenResponse login(@RequestBody AuthCodeRequest request) {
         String accessToken = userService.authenticate(request.code());
         return new TokenResponse(accessToken);
